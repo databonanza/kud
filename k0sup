@@ -1,7 +1,7 @@
 #!/bin/bash
 
 workernodes=$1
-k0sdir=~/Development/aberdeen/k0s
+k0sdir="${K0S_DIR}"
 nginxdir=$k0sdir/nginx
 nginxconf=$nginxdir/k0s-ext-lb-docker.conf
 node=1
