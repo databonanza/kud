@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "shutting down all nodes..."
+for n in $(docker ps | awk '/k0s-/ { print $1 }')
+do
+  docker stop $n
+done
+
+echo "cleaning up after myself..."
+docker system prune -f
+docker volume prune -f
