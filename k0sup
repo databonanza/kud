@@ -1,14 +1,16 @@
 #!/bin/bash
 
 workernodes=${1}
-k0sdir=~/k0s
+k0sdir=${PWD}
 nginxdir=${k0sdir}/nginx
 nginxconf=${nginxdir}/k0s-ext-lb-docker.conf
 node=1
-t_out=5
+t_out=3
+
+echo -e "workernodes: ${workernodes}\nk0sdir: ${k0sdir}\nnginxdir: ${nginxdir}\nnginxconf: ${nginxconf}\nnode: ${node}\nt_out: ${t_out}\n"
 
 echo "starting controller node..."
-docker run -d --name k0s-controller-1 --hostname k0s-controller-1 -v ${k0sdir}:/k0s --privileged -p 6443:6443 -v /var/lib/k0s k0sproject/k0s k0s controller -c ${k0sdir}/controller/controller.yaml
+docker run -d --name k0s-controller-1 --hostname k0s-controller-1 -v ${k0sdir}:/k0s --privileged -p 6443:6443 -v /var/lib/k0s k0sproject/k0s k0s controller -c /k0s/controller/controller.yaml
 
 echo "allowing controller to warm up for ${t_out} seconds..."
 sleep ${t_out}
