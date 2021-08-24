@@ -23,3 +23,12 @@ All progress and planned features can be tracked [here](https://github.com/mount
 
 ## Issues
 If there are issues, please open an issue and/or fork and submit a PR for improvements.
+
+## TODO
+SSL - sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain <certificate>
+openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+openssl rsa -passin pass:x -in server.pass.key -out server.key
+rm server.pass.key
+openssl req -new -key server.key -out server.csr
+openssl req -new -key server.key -out server.csr -subj "/C=US/ST=Texas/L=Austin/O=Out Systems/OU=IT/CN=k0s.local"
+openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt
