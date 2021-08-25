@@ -1,9 +1,9 @@
 #!/bin/bash
 
 workernodes=$1
-k0sdir="${K0S_DIR}"
+k0sdir="$(dirname $(readlink ${BASH_SOURCE[0]}))"
 nginxdir=$k0sdir/nginx
-nginxconf=$nginxdir/k0s-ext-lb-docker.conf
+nginxconf=$nginxdir/default.conf
 node=1
 
 echo "starting controller node..."
@@ -33,8 +33,9 @@ cat >> $nginxconf << EOL
 
 server {
   listen 80;
-  server_name k0s.local;
+  server_name *.k0s.local;
   location / {
+    proxy_set_header Host \$host;
     proxy_pass http://workers;
   }
 }
@@ -56,7 +57,7 @@ then
 fi
 
 echo "[helm] installing bitnami repository..."
-helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add bitnami https://charts.bitnami.com/bitnami &> /dev/null
 
 echo "[helm] insalling nginx-ingress from bitnami..."
 helm install nginx-ingress bitnami/nginx-ingress-controller --values $k0sdir/charts/nginx-ingress.yaml &> /dev/null
