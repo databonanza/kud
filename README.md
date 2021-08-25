@@ -10,7 +10,6 @@ this will continue to evolve as I learn more.
 ## Requirements
 ### *(and, let's be honest, a couple limitations)*
 - Helm 3
-- Environment variable (`K0S_DIR`) that corresponds to the cloned repository
 - Hosts file updated to point k0s.local and www.k0s.local to 127.0.0.1
 
 ## Current Status
