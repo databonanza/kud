@@ -6,8 +6,9 @@ upstream workers {
 
 server {
   listen 80;
-  server_name k0s.local;
+  server_name *.k0s.local;
   location / {
+    proxy_set_header  Host  $host;
     proxy_pass http://workers;
   }
 }

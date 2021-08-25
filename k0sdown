@@ -1,11 +1,17 @@
 #!/bin/bash
 
+k0sdir="$(dirname $(readlink ${BASH_SOURCE[0]}))"
+nginxdir=$k0sdir/nginx
+
 echo "shutting down all nodes..."
 for n in $(docker ps | awk '/k0s-/ { print $1 }')
 do
-  docker stop $n
+  docker stop $n &> /dev/null
 done
 
 echo "cleaning up after myself..."
-docker system prune -f
-docker volume prune -f
+echo "   system space recovered: $(docker system prune -f | awk '/reclaimed space/ { print $4 }')"
+echo "   volume space recovered: $(docker volume prune -f | awk '/reclaimed space/ { print $4 }')"
+
+echo "removing nginx config file..."
+rm $nginxdir/default.conf
