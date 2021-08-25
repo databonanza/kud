@@ -7,12 +7,17 @@ security professional by day, I wanted to align my deployments with what I think
 around security, access, etc. **At this stage, it may be incorrect. I am still learning.** As such,
 this will continue to evolve as I learn more.
 
+## Requirements
+### *(and, let's be honest, a couple limitations)*
+- Helm 3
+- Hosts file updated to point k0s.local and www.k0s.local to 127.0.0.1
+
 ## Current Status
 kud will deploy a basic local cluster with an ingress controller and external load balancer.
 
 ## Current Features
 ### Basic Cluster
-- one controller and _n_ worker containers up
+- one controller and *n* worker containers up
 - external load balancer config dynamically generated
 - external load balancer deployed with config
 - .kube/config extracted from controller and placed in ~/.kube/config
