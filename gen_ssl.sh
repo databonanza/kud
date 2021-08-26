@@ -1,11 +1,19 @@
 #!/bin/bash
 
-name=server
-our_name=server-$(date +%s)
+name=${1}
+our_name=${name}
+#our_name=${name}-$(date +%s)
 our_crt=${our_name}.crt
 our_key=${our_name}.key
 our_passkey=${our_name}.pass.key
 our_csr=${our_name}.csr
+
+country=US
+state=Texas
+locality=Austin
+org=Out\ Systems
+org_unit=IT
+canon_name=k0s.local
 
 openssl genrsa \
   -des3 \
@@ -24,7 +32,7 @@ openssl req \
   -new \
   -key ${our_key} \
   -out ${our_csr} \
-  -subj "/C=US/ST=Texas/L=Austin/O=Out Systems/OU=IT/CN=k0s.local" \
+  -subj "/C=${country}/ST=${state}/L=${locality}/O=${org}/OU=${org_unit}/CN=${canon_name}" \
   &> /dev/null
 
 openssl x509 \
@@ -43,15 +51,7 @@ sudo security add-trusted-cert \
   ./${our_crt}
 
 sudo security find-certificate \
-  -c k0s.local \
+  -c ${canon_name} \
   -a \
   -Z 
 
-sudo security delete-certificate \
-  -c k0s.local
-
-rm \
-  ${our_crt} \
-  ${our_passkey} \
-  ${our_csr} \
-  ${our_key}
