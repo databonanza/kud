@@ -2,23 +2,30 @@
 
 # determine absolute path of the executable
 execDir=${BASH_SOURCE[0]}
-execDirCheck=$(readlink $execDir)
+execDirCheck=$(readlink ${execDir})
 
 # check the context and set appropriately
-if [ -z $execDirCheck ]; then
+if [ -z ${execDirCheck} ]; then
   k0sdir=$(pwd)
 else
-  k0sdir=$(dirname $execDirCheck)
+  k0sdir=$(dirname ${execDirCheck})
 fi
 
 # paths setup and discovery
-workernodes=$1
-nginxdir=$k0sdir/nginx
-nginxconf=$nginxdir/default.conf
+workernodes=${1}
+nginxdir=${k0sdir}/nginx
+nginxconf=${nginxdir}/default.conf
 node=1
 t_out=3
 
 echo -e "workernodes: ${workernodes}\nk0sdir: ${k0sdir}\nnginxdir: ${nginxdir}\nnginxconf: ${nginxconf}\nnode: ${node}\nt_out: ${t_out}\n"
+
+echo "checking for helm..."
+if ! command -v helm &> /dev/null
+then
+  echo "helm not installed or found in PATH, exiting..."
+  exit
+fi
 
 echo "starting controller node..."
 docker run -d --name k0s-controller-1 --hostname k0s-controller-1 -v ${k0sdir}:/k0s --privileged -p 6443:6443 -v /var/lib/k0s k0sproject/k0s k0s controller -c /k0s/controller/controller.yaml
@@ -67,15 +74,8 @@ if [ ! -d ~/.kube ]; then
   mkdir ~/.kube
 fi
 
-echo "$config" > ~/.kube/config
+echo "${config}" > ~/.kube/config
 chmod 600 ~/.kube/config
-
-echo "checking for helm..."
-if ! command -v helm &> /dev/null
-then
-  echo "helm not installed or found in PATH, exiting..."
-  exit
-fi
 
 echo "[helm] installing bitnami repository..."
 helm repo add bitnami https://charts.bitnami.com/bitnami &> /dev/null
