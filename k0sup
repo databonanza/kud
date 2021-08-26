@@ -55,8 +55,14 @@ EOL
 echo "starting up external nginx load balancer to the worker nodes..."
 docker run -p 80:80 -v $nginxdir:/etc/nginx/conf.d --name k0s-ext-lb -d nginx
 
-echo "snarfing up kubecfg and placing in .kube..."
+
 config=$(docker exec k0s-controller-1 cat /var/lib/k0s/pki/admin.conf)
+echo "snarfing up kubecfg and placing in .kube..."
+
+if [ ! -d ~/.kube ]; then
+  mkdir ~/.kube
+fi
+
 echo "$config" > ~/.kube/config
 chmod 600 ~/.kube/config
 
