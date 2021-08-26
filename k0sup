@@ -1,7 +1,18 @@
 #!/bin/bash
 
+# determine absolute path of the executable
+execDir=${BASH_SOURCE[0]}
+execDirCheck=$(readlink $execDir)
+
+# check the context and set appropriately
+if [ -z $execDirCheck ]; then
+  k0sdir=$(pwd)
+else
+  k0sdir=$(dirname $execDirCheck)
+fi
+
+# paths setup and discovery
 workernodes=$1
-k0sdir="$(dirname $(readlink ${BASH_SOURCE[0]}))"
 nginxdir=$k0sdir/nginx
 nginxconf=$nginxdir/default.conf
 node=1
