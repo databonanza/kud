@@ -2,10 +2,10 @@
 A set of helper scripts and Helm values files to standup a local Kubernetes clusters based on K0s.
 
 ## Background
-As I've been learning Kubernetes, I've been using k0s to teach myself the various components. As a
-security professional by day, I wanted to align my deployments with what I think are good practices
-around security, access, etc. **At this stage, it may be incorrect. I am still learning.** As such,
-this will continue to evolve as I learn more.
+I've been using k0s to teach myself the various components. 
+I wanted to align my deployments with what I think are good practices around security, access, etc.
+**At this stage, it may be incorrect. I am still learning.**
+As such, this will continue to evolve as I learn more.
 
 ## Requirements
 ### *(and, let's be honest, a couple limitations)*
