@@ -15,7 +15,6 @@ org_unit=IT
 canon_name=k0s.local
 
 openssl genrsa \
-  -des3 \
   -passout pass:x \
   -out ${our_passkey} \
   2048 \
