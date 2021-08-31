@@ -2,7 +2,6 @@
 
 name=${1}
 our_name=${name}
-#our_name=${name}-$(date +%s)
 our_crt=${our_name}.crt
 our_key=${our_name}.key
 our_passkey=${our_name}.pass.key
@@ -58,7 +57,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
                 -k /Library/Keychains/System.keychain \
                 ./${our_crt}
         sudo security find-certificate \
-                -c ${canon_name} \
+                -c ${our_name} \
                 -a \
                 -Z
 else
