@@ -29,7 +29,7 @@ echo "   volume space recovered: $(docker volume prune -f | awk '/reclaimed spac
 
 # removing nginx config used on load balancer
 echo "removing nginx config file..."
-rm ${nginxdir}/default.conf
+rm ${nginxdir}/default.conf &> /dev/null
 
 echo "removing SSL certificate..."
-${k0sdir}/cln_ssl.sh ${ssl_name}
+${k0sdir}/cln_ssl.sh ${ssl_name} &> /dev/null

@@ -44,14 +44,22 @@ openssl x509 \
   -out ${our_crt} \
   &> /dev/null
 
-sudo security add-trusted-cert \
-  -d \
-  -r trustRoot \
-  -k /Library/Keychains/System.keychain \
-  ./${our_crt}
-
-sudo security find-certificate \
-  -c ${canon_name} \
-  -a \
-  -Z 
-
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # add
+        sudo mkdir -p /usr/share/ca-certificates/extra
+        sudo cp ${our_crt} /usr/share/ca-certificates/extra
+        sudo dpkg-reconfigure ca-certificates
+        grep extra /etc/ca-certificates.conf
+        sudo update-ca-certificates
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+        sudo security add-trusted-cert \
+                -d \
+                -r trustRoot \
+                -k /Library/Keychains/System.keychain \
+                ./${our_crt}
+        sudo security find-certificate \
+                -c ${canon_name} \
+                -a \
+                -Z
+else
+fi
